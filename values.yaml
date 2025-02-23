@@ -1,0 +1,15 @@
+replicaCount: 1
+
+image:
+  repository: myapp-image
+  tag: latest
+  pullPolicy: IfNotPresent
+
+database:
+  user: myuser
+  password: mypassword
+  name: mydatabase
+
+ingress:
+  enabled: true
+  host: myapp.local

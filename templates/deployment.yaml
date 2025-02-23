@@ -1,28 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app-helm-deployment
+  name: myapp
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: my-app-helm
+      app: myapp
   template:
     metadata:
       labels:
-        app: my-app-helm
+        app: myapp
     spec:
       containers:
-      - name: my-app
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+      - name: myapp
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
-          - containerPort: 80
-        resources:
-          limits:
-            cpu: {{ .Values.resources.limits.cpu }}
-            memory: {{ .Values.resources.limits.memory }}
-          requests:
-            cpu: {{ .Values.resources.requests.cpu }}
-            memory: {{ .Values.resources.requests.memory }}
-
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:postgresql://postgres:5432/{{ .Values.database.name }}
+        - name: SPRING_DATASOURCE_USERNAME
+          value: {{ .Values.database.user }}
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: {{ .Values.database.password }}
